@@ -10,20 +10,29 @@ CREATE TABLE IF NOT EXISTS funcionarios (
   salario REAL NOT NULL
 )
 """)
+while True:
+    op = input(
+        "\n Escolha uma opção: \n1 - cadastrar um funcionário \n2 - sair \n")
+    if op == "1":
+        nome = input("Qual o nome do funcionário? ")
+        cargo = input("Qual o cargo do funcionário? ")
+        salario = float(input("Qual o salário do funcionário? "))
 
-nome = input("Digite o nome do funcionário: ")
-cargo = input("Digite o cargo do funcionário: ")
-salario = float(input("Digite o salário do funcionario: "))
-
-cursor.execute("""
-INSERT INTO funcionarios (nome, cargo, salario) VALUES (?, ?, ?)
+        cursor.execute("""
+    INSERT INTO funcionarios (nome, cargo, salario) VALUES (?, ?, ?)
 """, (nome, cargo, salario))
+
+        cursor.execute("SELECT * FROM funcionarios")
+        funcionarios = cursor.fetchall()
+        print("\n --- Funcionarios cadastrados ---")
+        for funcionario in funcionarios:
+            print(funcionario)
+        conexao.commit()
+    elif op == "2":
+        break
+
 
 conexao.commit()
 
-cursor.execute("SELECT * FROM funcionarios")
-funcionarios = cursor.fetchall()
-print("\n --- Funcionarios cadastrados ---")
-for funcionario in funcionarios:
-    print(funcionario)
+
 conexao.close()
